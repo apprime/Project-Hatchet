@@ -1,0 +1,6 @@
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\bin\Release\Dominion.Main.dll.config
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\bin\Release\Dominion.Main.dll
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\bin\Release\Dominion.Main.pdb
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\obj\Release\Dominion.Main.dll
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\obj\Release\Dominion.Main.pdb
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\obj\Release\Dominion.Main.csprojResolveAssemblyReference.cache

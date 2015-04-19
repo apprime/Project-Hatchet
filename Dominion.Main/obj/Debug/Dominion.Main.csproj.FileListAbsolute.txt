@@ -1,0 +1,5 @@
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\bin\Debug\Dominion.Main.dll.config
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\bin\Debug\Dominion.Main.dll
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\bin\Debug\Dominion.Main.pdb
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\obj\Debug\Dominion.Main.dll
+C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main\obj\Debug\Dominion.Main.pdb
