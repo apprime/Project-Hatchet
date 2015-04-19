@@ -1,8 +1,0 @@
-C:\Users\Peter\Badass\hatchet\hatchet\AspNet.Identity.MySQL\obj\Debug\AspNet.Identity.MySQL.csprojResolveAssemblyReference.cache
-C:\Users\Peter\Badass\hatchet\hatchet\AspNet.Identity.MySQL\bin\Debug\AspNet.Identity.MySQL.dll.config
-C:\Users\Peter\Badass\hatchet\hatchet\AspNet.Identity.MySQL\bin\Debug\AspNet.Identity.MySQL.dll
-C:\Users\Peter\Badass\hatchet\hatchet\AspNet.Identity.MySQL\bin\Debug\AspNet.Identity.MySQL.pdb
-C:\Users\Peter\Badass\hatchet\hatchet\AspNet.Identity.MySQL\bin\Debug\Microsoft.AspNet.Identity.Core.dll
-C:\Users\Peter\Badass\hatchet\hatchet\AspNet.Identity.MySQL\bin\Debug\Microsoft.AspNet.Identity.Core.xml
-C:\Users\Peter\Badass\hatchet\hatchet\AspNet.Identity.MySQL\obj\Debug\AspNet.Identity.MySQL.dll
-C:\Users\Peter\Badass\hatchet\hatchet\AspNet.Identity.MySQL\obj\Debug\AspNet.Identity.MySQL.pdb
