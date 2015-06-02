@@ -4,6 +4,7 @@ using Dominion.Data.MySql;
 
 namespace Dominion.Data.Authorization.User
 {
+
     /// <summary>
     /// Class that represents the UserLogins table in the MySQL Database
     /// </summary>
@@ -26,7 +27,7 @@ namespace Dominion.Data.Authorization.User
         /// <param name="user">User to have login deleted</param>
         /// <param name="login">Login to be deleted from user</param>
         /// <returns></returns>
-        public int Delete(DominionUser user, UserLoginInfo login)
+        public int Delete(UserIdentity user, UserLoginInfo login)
         {
             string commandText = "Delete from UserLogins where UserId = @userId and LoginProvider = @loginProvider and ProviderKey = @providerKey";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
@@ -57,7 +58,7 @@ namespace Dominion.Data.Authorization.User
         /// <param name="user">User to have new login added</param>
         /// <param name="login">Login to be added</param>
         /// <returns></returns>
-        public int Insert(DominionUser user, UserLoginInfo login)
+        public int Insert(UserIdentity user, UserLoginInfo login)
         {
             string commandText = "Insert into UserLogins (LoginProvider, ProviderKey, UserId) values (@loginProvider, @providerKey, @userId)";
             Dictionary<string, object> parameters = new Dictionary<string, object>();

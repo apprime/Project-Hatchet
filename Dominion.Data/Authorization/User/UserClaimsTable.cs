@@ -28,8 +28,8 @@ namespace Dominion.Data.Authorization.User
         public ClaimsIdentity FindByUserEmail(string userEmail)
         {
             ClaimsIdentity claims = new ClaimsIdentity();
-            string commandText = "Select * from UserClaims where UserId = @userId";
-            Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@UserEmail", userEmail } };
+            string commandText = "Select * from UserClaims where UserEmail = @useremail";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@useremail", userEmail } };
 
             var rows = _database.Query(commandText, parameters);
             foreach (var row in rows)
@@ -46,11 +46,14 @@ namespace Dominion.Data.Authorization.User
         /// </summary>
         /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public ClaimsIdentity FindByUserId(string userId)
+        public ClaimsIdentity FindByUserId(string id)
         {
             ClaimsIdentity claims = new ClaimsIdentity();
-            string commandText = "Select * from UserClaims where UserId = @userId";
-            Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@UserId", userId } };
+            string commandText = "Select * from UserClaims where Id = @id";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() 
+            { 
+                { "@username", id }, 
+            };
 
             var rows = _database.Query(commandText, parameters);
             foreach (var row in rows)
@@ -67,11 +70,14 @@ namespace Dominion.Data.Authorization.User
         /// </summary>
         /// <param name="userId">The user's id</param>
         /// <returns></returns>
-        public int Delete(string userId)
+        public int Delete(UserHandle user)
         {
-            string commandText = "Delete from UserClaims where UserId = @userId";
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("userId", userId);
+            string commandText = "Delete from UserClaims where UserName = @username and Id = @id";
+            Dictionary<string, object> parameters = new Dictionary<string, object>()           
+            { 
+                { "@username", user.Id }, 
+                {"@id", user.Name }
+            };
 
             return _database.Execute(commandText, parameters);
         }
@@ -82,13 +88,13 @@ namespace Dominion.Data.Authorization.User
         /// <param name="userClaim">User's claim to be added</param>
         /// <param name="userId">User's id</param>
         /// <returns></returns>
-        public int Insert(Claim userClaim, string userId)
+        public int Insert(Claim userClaim, string id)
         {
             string commandText = "Insert into UserClaims (ClaimValue, ClaimType, UserId) values (@value, @type, @userId)";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("id", id);
             parameters.Add("value", userClaim.Value);
             parameters.Add("type", userClaim.Type);
-            parameters.Add("userId", userId);
 
             return _database.Execute(commandText, parameters);
         }
@@ -99,11 +105,11 @@ namespace Dominion.Data.Authorization.User
         /// <param name="user">The user to have a claim deleted</param>
         /// <param name="claim">A claim to be deleted from user</param>
         /// <returns></returns>
-        public int Delete(DominionUser user, Claim claim)
+        public int Delete(string id, Claim claim)
         {
             string commandText = "Delete from UserClaims where UserId = @userId and @ClaimValue = @value and ClaimType = @type";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("userId", user.Id);
+            parameters.Add("id", id);
             parameters.Add("value", claim.Value);
             parameters.Add("type", claim.Type);
 

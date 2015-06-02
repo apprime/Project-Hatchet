@@ -74,10 +74,14 @@
   <ItemGroup>
     <Compile Include="Authorization\CodeVerificationServices\EmailService.cs" />
     <Compile Include="Authorization\CodeVerificationServices\SmsService.cs" />
+    <Compile Include="Authorization\DominionUser\DominionUserStore.cs" />
     <Compile Include="Authorization\Roles\IdentityRole.cs" />
-    <Compile Include="Authorization\User\DominionSignInManager.cs" />
-    <Compile Include="Authorization\User\DominionUserManager.cs" />
-    <Compile Include="Authorization\User\DominionUser.cs" />
+    <Compile Include="Authorization\DominionUser\DominionUser.cs" />
+    <Compile Include="Authorization\User\UserIdentityStore.cs" />
+    <Compile Include="Authorization\User\UserIdentityManager.cs" />
+    <Compile Include="Authorization\DominionUser\DominionSignInManager.cs" />
+    <Compile Include="Authorization\DominionUser\DominionUserManager.cs" />
+    <Compile Include="Authorization\User\UserIdentity.cs" />
     <Compile Include="Authorization\Roles\RoleStore.cs" />
     <Compile Include="Authorization\Roles\RoleTable.cs" />
     <Compile Include="Authorization\User\UserClaimsTable.cs" />
@@ -86,9 +90,10 @@
     <Compile Include="Authorization\User\UserRoleTable.cs" />
     <Compile Include="Authorization\User\UserStore.cs" />
     <Compile Include="Authorization\User\UserTable.cs" />
-    <Compile Include="Cryptography\BcryptExtensions.cs" />
+    <Compile Include="Cryptography\BCryptHasher.cs" />
     <Compile Include="MySql\MySQLDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\Regex\Common.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,26 +1,24 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Dominion.Data.Validation.Regex;
+using Microsoft.AspNet.Identity;
 using System;
-using System.Linq;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-using System.Security;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;  
-using Dominion.Data.Authorization;
 
 namespace Dominion.Data.Authorization.User
 {
     //Todo(apprime): Ensure all values in user are populated or default in constructor. Avoid nulls in and out of db!
     /// <summary>
-    /// Class that implements the ASP.NET Identity
-    /// IUser interface 
+    /// Handles the information about a user that is needed for authorization
+    /// Inherits from UserHandle that is needed to uniquely identify a user
+    ///  TODO: Move this and all baseline Identity to some sort of library or secluded part of project
     /// </summary>
-    public class DominionUser : IUser<int>
+    public class UserIdentity : IUser<string>
     {
         /// <summary>
         /// Default constructor 
         /// </summary>
-        public DominionUser()
+        public UserIdentity()
         {
         }
 
@@ -30,15 +28,13 @@ namespace Dominion.Data.Authorization.User
         /// <param name="userName">(String)</param>
         /// <param name="email">(String)</param>
         /// <param name="password">(String)</param>
-        public DominionUser(string userName, int userId, string email, string password) //Todo(apprime): securestring password?
-            : this()
+        public UserIdentity(string email, string password) //Todo(apprime): securestring password?
         {
-            UserName = userName;
-            LockoutEnabled = true; //TODO: Magic number, set as default constant in webconfig
-            Id = userId;
+            LockoutEnabled = true; //TODO: Magic value, set as default constant in webconfig
+            PhoneNumberConfirmed = false;
         }
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(DominionUserManager manager)
+        public virtual async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<UserIdentity, string> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -47,27 +43,27 @@ namespace Dominion.Data.Authorization.User
         }
 
         /// <summary>
-        /// User ID
-        /// This Id is automatically generated upon account generation.
-        /// It creates a composite key together with username.
-        /// Any one username + id is unique
-        /// Lock assets to avoid multiple account registrations to occur at once for a username
+        /// UserName as a string
         /// </summary>
-        [Range(1000, 9999)]
-        public int Id { get; set; }
+        [RegularExpression(Common.Alphanumeric)]
+        public virtual string UserName { get; set; }
+        
+        /// <summary>
+        /// Unique identifier for a user
+        /// </summary>
+        public virtual string Id { get; set; }
 
         /// <summary>
-        /// User's name
-        /// </summary>
-        //Todo(apprime): Alphanumeric only!
-        public string UserName { get; set; }
-
-        /// <summary>
-        ///     Email
+        /// Email is the unique Id for a user. 
+        /// It is simply a synonym
         /// </summary>
         [EmailAddress]
         [Required]
-        public virtual string Email { get; set; }
+        public virtual string Email 
+        { 
+            get { return Id; }
+            set { this.Id = value; } 
+        }
 
         /// <summary>
         ///     True if the email is confirmed, default is false
@@ -78,6 +74,7 @@ namespace Dominion.Data.Authorization.User
         /// <summary>
         ///     The salted/hashed form of the user password
         /// </summary>
+        [Required]
         public virtual string PasswordHash { get; set; }
 
         /// <summary>
@@ -85,6 +82,7 @@ namespace Dominion.Data.Authorization.User
         /// </summary>
         public virtual string SecurityStamp { get; set; }
 
+        #region Two-Step Verification
         /// <summary>
         ///     PhoneNumber for the user
         /// </summary>
@@ -100,6 +98,7 @@ namespace Dominion.Data.Authorization.User
         ///     Is two factor enabled for the user
         /// </summary>
         public virtual bool TwoFactorEnabled { get; set; }
+        #endregion
 
         #region Lockout Variables
         /// <summary>
@@ -111,11 +110,16 @@ namespace Dominion.Data.Authorization.User
         ///     Has user enabled account lockout?
         /// </summary>
         public virtual bool LockoutEnabled { get; set; }
+
+        /// <summary>
+        ///     How many attempts are allowed until user
+        /// </summary>
+        public virtual bool LockoutLimit { get; set; }
       
         /// <summary>
         /// Used to record failures for the purposes of lockout
         /// </summary>
-        public int AccessFailedCount { get; set; }
+        public virtual int AccessFailedCount { get; set; }
         #endregion
     }
 }

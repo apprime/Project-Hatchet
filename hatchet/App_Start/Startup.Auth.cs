@@ -5,7 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using Dominion.Web.Models;
-using Dominion.Data.Authorization.User;
+using Dominion.Data.Authorization.User.DominionUser;
 using Dominion.Data.MySql;
 namespace Dominion.Web
 {
@@ -17,7 +17,8 @@ namespace Dominion.Web
             // Create a repository of static instances for each request
             app.CreatePerOwinContext<UserDbContext>(UserDbContext.Create); //Identity/Auth database
             app.CreatePerOwinContext<DominionDbContext>(DominionDbContext.Create); //Game database
-            app.CreatePerOwinContext<DominionUserManager>(DominionUserManager.Create);
+            app.CreatePerOwinContext<DominionUserManager>(DominionUserManager.Create); //Playing users
+            //app.CreatePerOwinContext<AdminUserManager>(DominionUserManager.Create); //TODONon-playing users
             app.CreatePerOwinContext<DominionSignInManager>(DominionSignInManager.Create);
 
             // Enable the application to use a cookie to store information for the signed in user

@@ -5,7 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Dominion.Data.Authorization;
 
-namespace Dominion.Data.Authorization.User
+namespace Dominion.Data.Authorization.User.DominionUser
 {
     public class DominionSignInManager : SignInManager<DominionUser, string>
     {
@@ -14,10 +14,7 @@ namespace Dominion.Data.Authorization.User
         {
         }
 
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(DominionUser user)
-        {
-            return user.GenerateUserIdentityAsync((DominionUserManager)UserManager);
-        }
+
 
         public static DominionSignInManager Create(IdentityFactoryOptions<DominionSignInManager> options, IOwinContext context)
         {

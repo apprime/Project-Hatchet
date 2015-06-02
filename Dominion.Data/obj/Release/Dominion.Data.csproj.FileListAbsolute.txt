@@ -20,4 +20,3 @@ C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Data\bin\Release\Microsoft.Owin.x
 C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Data\bin\Release\Microsoft.Owin.Security.xml
 C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Data\bin\Release\Microsoft.Owin.Security.Cookies.xml
 C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Data\bin\Release\Newtonsoft.Json.xml
-C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Data\obj\Release\Dominion.Data.csprojResolveAssemblyReference.cache

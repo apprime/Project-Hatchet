@@ -11,7 +11,7 @@ namespace Dominion.Data.Authorization.User
     /// Always check methods that call this class for nulls.
     /// </summary>
     public class UserTable<TUser>
-        where TUser :DominionUser
+        where TUser : UserIdentity
     {
         private MySQLDatabase _database;
 
@@ -68,12 +68,7 @@ namespace Dominion.Data.Authorization.User
             if(query != null)
             {
                 //Todo(apprime): Is this how to treat the incoming query data?
-                return new UserHandle
-                {
-                    //We do not allow null for either of these two columns, no nullcheck is needed
-                    UserName = query["UserName"],
-                    Id = int.Parse(query["Id"])
-                };
+                return new UserHandle(query["UserName"], int.Parse(query["Id"]));
             }
 
             return null;
@@ -81,27 +76,6 @@ namespace Dominion.Data.Authorization.User
         #endregion
 
         #region Get User, Users
-        /// <summary>
-        /// Returns an TUser given the user's id
-        /// </summary>
-        /// <param name="userId">The user's id</param>
-        /// <returns></returns>
-        public TUser GetUserByHandle(UserHandle userHandle)
-        {
-            string commandText = "Select * from Users where Id = @id and UserName = @username";
-            Dictionary<string, object> parameters = new Dictionary<string, object>() 
-            { 
-                { "@id", userHandle.Id },
-                { "@username", userHandle.UserName }
-            };
-
-            var rows = _database.Query(commandText, parameters);
-            if (!rows.Any()) return null;
-
-            var row = rows[0]; //Assume there is only one user. If not, we have bigger problems than fetching the wrong one
-            return MapRowToUser(row);
-        }
-
         /// <summary>
         /// Returns an TUser given the user's id
         /// </summary>
@@ -148,11 +122,10 @@ namespace Dominion.Data.Authorization.User
         private TUser MapRowToUser(Dictionary<string, string> row)
         {
              var user = (TUser)Activator.CreateInstance(typeof(TUser));
-            user.Id = int.Parse(row["Id"]);
             user.UserName = row["UserName"];
             user.PasswordHash =row["PasswordHash"];
             user.SecurityStamp = row["SecurityStamp"];
-            user.Email = row["Email"];
+            user.Id = row["Id"];
             user.EmailConfirmed = row["EmailConfirmed"] == "1" ? true : false;
             user.PhoneNumber = row["PhoneNumber"];
             user.PhoneNumberConfirmed = row["PhoneNumberConfirmed"] == "1" ? true : false;
@@ -176,12 +149,7 @@ namespace Dominion.Data.Authorization.User
             Dictionary<string, object> parameters = new Dictionary<string, object>() { { "@name", userName } };
 
             var rows = _database.Query(commandText, parameters);
-            IEnumerable<UserHandle> users = rows.Select(row => new UserHandle 
-                                                            { 
-                                                                Id = int.Parse(row["Id"]), 
-                                                                UserName = row["UserName"] 
-                                                            } 
-                                                        );
+            IEnumerable<UserHandle> users = rows.Select(row => new UserHandle(row["UserName"] , int.Parse(row["Id"])));
 
             return users;
         }
@@ -268,16 +236,20 @@ namespace Dominion.Data.Authorization.User
         }
 
         #region Delete User
+
         /// <summary>
-        /// Deletes a user from the Users table
+        /// Removes a user based on username and Id
         /// </summary>
-        /// <param name="userId">The user's id</param>
+        /// <param name="username">String of username</param>
+        /// <param name="id">Int of user Id</param>
+        /// <param name="email">string of user email</param>
         /// <returns></returns>
-        private int Delete(string userEmail)
+        private int Delete(string username, string email)
         {
-            string commandText = "Delete from Users where Email = @userEmail";
+            string commandText = "Delete from Users where UserName = @userName and Id = @userEmail";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("@userEmail", userEmail);
+            parameters.Add("@userName", username);
+            parameters.Add("@userEmail", email);
 
             return _database.Execute(commandText, parameters);
         }
@@ -289,7 +261,7 @@ namespace Dominion.Data.Authorization.User
         /// <returns></returns>
         public int Delete(TUser user)
         {
-            return Delete(user.Email);
+            return Delete(user.UserName, user.Email);
         }
         #endregion
 
@@ -303,13 +275,13 @@ namespace Dominion.Data.Authorization.User
             string commandText = @"Update Users set UserName = @userName, PasswordHash = @pswHash, SecurityStamp = @secStamp, 
                 Email=@email, EmailConfirmed=@emailconfirmed, PhoneNumber=@phonenumber, PhoneNumberConfirmed=@phonenumberconfirmed,
                 AccessFailedCount=@accesscount, LockoutEnabled=@lockoutenabled, LockoutEndDateUtc=@lockoutenddate, TwoFactorEnabled=@twofactorenabled  
-                WHERE Id = @userId";
+                WHERE UserName = @userName and Id = @id";
 
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("@userName", user.UserName);
             parameters.Add("@pswHash", user.PasswordHash);
             parameters.Add("@secStamp", user.SecurityStamp);
-            parameters.Add("@userId", user.Id);
+            parameters.Add("@id", user.Id);
             parameters.Add("@email", user.Email);
             parameters.Add("@emailconfirmed", user.EmailConfirmed);
             parameters.Add("@phonenumber", user.PhoneNumber);

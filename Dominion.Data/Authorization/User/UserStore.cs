@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Dominion.Data.MySql;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Dominion.Data.MySql;
 using bcrypt = BCrypt.Net.BCrypt;
+using Dominion.Data.Authorization.User;
 
-namespace Dominion.Data.Authorization.User
+namespace Dominion.Data.Authorization.User.Store
 {
     //Todo(apprime): Remove unnecessary interfaces that won't be used by UserStore
-    //Todo(apprime): Currently, DominionUser has a unique identifier as a string.
-    //      it is called "id", which clashes with what we want to use Id for
-    //      Do we   a) Try and refactor this key so that it is something different
-    //      or      b) use the user email as unique key and have confusing names on methods? 
     /// <summary>
     /// Class that implements the key ASP.NET Identity user store iterfaces
     /// </summary>
@@ -28,7 +25,7 @@ namespace Dominion.Data.Authorization.User
                                     IUserTwoFactorStore<TUser, string>,
                                     IUserLockoutStore<TUser, string>,
                                     IUserStore<TUser>
-        where TUser : DominionUser
+        where TUser : UserIdentity
     {
         private UserTable<TUser> userTable;
         private RoleTable roleTable;
@@ -86,9 +83,9 @@ namespace Dominion.Data.Authorization.User
             throw new NotImplementedException();
         }
 
-        public Task<TUser> FindByIdAsync(string id)
+        public Task<TUser> FindByIdAsync(string email)
         {
-            return FindByEmail(id);
+            return Task.FromResult<TUser>(userTable.GetUserByEmail(email));
         }
 
 
@@ -101,62 +98,10 @@ namespace Dominion.Data.Authorization.User
         /// <returns></returns>
         public Task CreateAsync(TUser user)
         {
-            
-            int newId;
-            bool generatedId = GenerateId(user.UserName, out newId);
-            if(generatedId)
-            {
-                user.Id = newId;
-                userTable.Insert(user);
-            }
-            
+            userTable.Insert(user);
+                        
             return Task.FromResult<object>(null);
         }
-
-        private bool GenerateId(string username, out int id)
-        {
-            //Todo(apprime): Convert as much of this as possible to storedProcedure
-            //Is dbtable locked? - Wait
-            //Todo: Lock DB where Username = "stuff"
-
-            //Get # of usernames like this
-            List<TUser> users = userTable.GetUsersByName(username);
-            
-            //If no users are found, just randomly assign a new Id between 1000 and 9999
-            if(users == null || !users.Any())
-            {
-                int randomValue = _randomNumberGenerator.Next(1000, 9999);
-                id = randomValue; 
-                //Unlock table
-                return true;
-            }
-           
-            //If 9000 users, prompt user to pick a different username
-            if(users.Count() >= 9000) 
-            {
-                id = -1; 
-                //Unlock table
-                return false;
-            }
-
-            //Get all taken Id's in a hashSet
-            HashSet<int> blacklist = new HashSet<int>(users.Select(user => user.Id));
-
-            //Set up a list of all possible Id's
-            List<int> availableIds = Enumerable.Range(1000, 9999).ToList();
-            
-            //Remove the (subset) taken Id's from all possible.
-            availableIds.RemoveAll(availableId => blacklist.Contains(availableId));
-
-            //Select one random number, assign to Id
-            int candidate = _randomNumberGenerator.Next(0, availableIds.Count);
-            id = availableIds.ElementAt(candidate);
-            // TODO: Unlock dbtable
-            //Done
-            return true;
-        }
-
-
 
         /// <summary>
         /// Returns an TUser instance based on a userId query 
@@ -269,7 +214,7 @@ namespace Dominion.Data.Authorization.User
                 throw new ArgumentNullException("claim");
             }
 
-            userClaimsTable.Delete(user, claim);
+            userClaimsTable.Delete(user.Email, claim);
 
             return Task.FromResult<object>(null);
         }
@@ -304,7 +249,7 @@ namespace Dominion.Data.Authorization.User
         /// <returns></returns>
         public Task<TUser> GetUser(UserLoginInfo login)
         {
-            var userId = userLoginsTable.FindUserEMailByLogin(login);
+            var userId = userLoginsTable.FindUserIdByLogin(login);
             if (userId != null)
             {
                 TUser user = userTable.GetUserByEmail(userId) as TUser;

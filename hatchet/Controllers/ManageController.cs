@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Dominion.Web.Models;
-using Dominion.Data.Authorization.User;
+using Dominion.Data.Authorization.User.DominionUser;
 
 namespace Dominion.Web.Controllers
 {
