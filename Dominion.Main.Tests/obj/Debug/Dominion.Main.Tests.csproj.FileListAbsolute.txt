@@ -1,4 +1,0 @@
-C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main.Tests\bin\Debug\Dominion.Main.Tests.dll
-C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main.Tests\bin\Debug\Dominion.Main.Tests.pdb
-C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main.Tests\obj\Debug\Dominion.Main.Tests.dll
-C:\Users\Peter\Badass\hatchet\hatchet\Dominion.Main.Tests\obj\Debug\Dominion.Main.Tests.pdb
