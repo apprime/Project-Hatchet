@@ -17,3 +17,16 @@ Dominion.Data/bin/Debug/Dominion.Data.pdb
 Dominion.Data/bin/Debug/Microsoft.Owin.xml
 Dominion.Data.Tests/bin/Debug/Dominion.Data.Tests.dll
 *.pdb
+Dominion.Data.Tests/obj/Test/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+Dominion.Main.Tests/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+Dominion.Data.Tests/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+Dominion.Data.Tests/obj/Release/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+Dominion.Data.Tests/obj/Test/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+Dominion.Main.Tests/obj/Debug/Dominion.Main.Tests.csproj.FileListAbsolute.txt
+Dominion.Main.Tests/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+Dominion.Main.Tests/obj/Release/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+Dominion.Data.Tests/obj/Debug/Dominion.Data.Tests.csproj.FileListAbsolute.txt
+Dominion.Data.Tests/obj/Test/DesignTimeResolveAssemblyReferencesInput.cache
+Dominion.Main.Tests/obj/Debug/Dominion.Main.Tests.dll
+Dominion.Main.Tests/obj/Test/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+Dominion.Web.Tests/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
