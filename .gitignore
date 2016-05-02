@@ -16,3 +16,4 @@ Dominion.Data/bin/Debug/Microsoft.Owin.dll
 Dominion.Data/bin/Debug/Dominion.Data.pdb
 Dominion.Data/bin/Debug/Microsoft.Owin.xml
 Dominion.Data.Tests/bin/Debug/Dominion.Data.Tests.dll
+*.pdb
